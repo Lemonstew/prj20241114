@@ -27,21 +27,25 @@ export function BoardAdd() {
           description: message.text,
           type: message.type,
         });
-        setProgress(false);
         navigate(`/view/${data.data.id}`);
       })
       .catch((e) => {
         const message = e.response.data.message;
-        toaster.create({
-          description: message.text,
-          type: message.type,
-        });
-        setProgress(false);
+        toaster
+          .create({
+            description: message.text,
+            type: message.type,
+          })
+          .finally(() => {
+            // 성공 / 실패 상관없이 실행
+            setProgress(false);
+          });
       });
   };
   // axios.post("/api/board/add", {title: title, content: content, writer: writer})}
   // 원래 이름과 사용하려는 변수명이 같으면 생략 가능
 
+  const disabled = !(title.trim().length > 0 && content.trim().length > 0);
   return (
     <Box>
       <h2>게시물 작성</h2>
@@ -59,7 +63,11 @@ export function BoardAdd() {
           <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
         </Field>
         <Box>
-          <Button loading={progress} onClick={handleSaveClick}>
+          <Button
+            disabled={disabled}
+            loading={progress}
+            onClick={handleSaveClick}
+          >
             저장
           </Button>
         </Box>
