@@ -48,10 +48,10 @@ function BoardAdd() {
   const [writer, setWriter] = useState("");
 
   const handleSaveClick = () => {
-    // axios.post("/api/board/add", {title: title, content: content, writer: writer})}
-    // 원래 이름과 사용하려는 변수명이 같으면 생략 가능
     axios.post("/api/board/add", { title, content, writer });
   };
+  // axios.post("/api/board/add", {title: title, content: content, writer: writer})}
+  // 원래 이름과 사용하려는 변수명이 같으면 생략 가능
 
   return (
     <Box>
