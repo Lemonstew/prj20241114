@@ -10,10 +10,13 @@ export function BoardAdd() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [writer, setWriter] = useState("");
+  const [progress, setProgress] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSaveClick = () => {
+    setProgress(true);
+
     axios
       .post("/api/board/add", { title, content, writer })
       .then((res) => res.data)
@@ -24,7 +27,16 @@ export function BoardAdd() {
           description: message.text,
           type: message.type,
         });
+        setProgress(false);
         navigate(`/view/${data.data.id}`);
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          description: message.text,
+          type: message.type,
+        });
+        setProgress(false);
       });
   };
   // axios.post("/api/board/add", {title: title, content: content, writer: writer})}
@@ -47,7 +59,9 @@ export function BoardAdd() {
           <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
         </Field>
         <Box>
-          <Button onClick={handleSaveClick}>저장</Button>
+          <Button loading={progress} onClick={handleSaveClick}>
+            저장
+          </Button>
         </Box>
       </Stack>
     </Box>

@@ -31,4 +31,11 @@ public class BoardService {
     public Board get(int id) {
         return mapper.selectBuId(id);
     }
+
+    public boolean validate(Board board) {
+        boolean title = board.getTitle().trim().length() > 0;
+        boolean content = board.getContent().trim().length() > 0;
+
+        return title && content;
+    }
 }
