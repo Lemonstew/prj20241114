@@ -22,7 +22,7 @@ public class BoardService {
 
         if (cnt == 1) {
             return Map.of("message", Map.of("type", "success",
-                            "text", STR."\{board.getId}번 게시물이 등록되었습니다"),
+                            "text", STR."\{board.getId()}번 게시물이 등록되었습니다"),
                     "data", board);
         } else {
             return null;
