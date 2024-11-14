@@ -4,6 +4,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "../../components/ui/dialog.jsx";
 
 export function BoardView() {
   const { id } = useParams();
@@ -53,9 +63,29 @@ export function BoardView() {
           <Input value={board.inserted} />
         </Field>
         <Box>
-          <Button colorPalette={"red"} onClick={handleDeleteClick}>
-            삭제
-          </Button>
+          <DialogRoot>
+            <DialogTrigger>
+              <Button colorPalette={"red"} variant={"outline"}>
+                delete
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>삭제 확인</DialogTitle>
+              </DialogHeader>
+              <DialogBody>
+                <p>{board.id}번 게시물을 삭제하시겠습니까?</p>
+              </DialogBody>
+              <DialogFooter>
+                <DialogActionTrigger>
+                  <Button variant={"outline"}>취소</Button>
+                </DialogActionTrigger>
+                <Button colorPalette={"red"} onClick={handleDeleteClick}>
+                  삭제
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </DialogRoot>
         </Box>
       </Stack>
     </Box>
