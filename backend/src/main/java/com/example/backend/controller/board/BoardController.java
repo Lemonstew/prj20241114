@@ -14,6 +14,11 @@ public class BoardController {
 
     final BoardService service;
 
+    @GetMapping("view/{id}")
+    public Board view(@PathVariable int id) {
+        return service.get(id);
+    }
+
     @GetMapping("list")
     public List<Board> list() {
         return service.list();
