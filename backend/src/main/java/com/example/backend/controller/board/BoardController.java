@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,10 +26,10 @@ public class BoardController {
     }
 
     @PostMapping("add")
-    public Board add(@RequestBody Board board) {
-        service.add(board);
+    public Map<String, Object> add(@RequestBody Board board) {
 
-        return board;
+
+        return service.add(board);
     }
 
 }
