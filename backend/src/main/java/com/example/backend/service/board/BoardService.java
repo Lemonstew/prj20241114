@@ -29,7 +29,7 @@ public class BoardService {
     }
 
     public Board get(int id) {
-        return mapper.selectBuId(id);
+        return mapper.selectById(id);
     }
 
     public boolean validate(Board board) {
@@ -37,5 +37,10 @@ public class BoardService {
         boolean content = board.getContent().trim().length() > 0;
 
         return title && content;
+    }
+
+    public boolean remove(int id) {
+        int cnt = mapper.deleteById(id);
+        return cnt == 1;
     }
 }

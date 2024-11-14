@@ -16,6 +16,17 @@ public class BoardController {
 
     final BoardService service;
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
+        if (service.remove(id)) {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                    "text", STR."\{id}번 게시글이 삭제되었습니다.")));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error",
+                    "text", "게시글 삭제 중 문제가 발생하였습니다.")));
+        }
+    }
+
     @GetMapping("view/{id}")
     public Board view(@PathVariable int id) {
         return service.get(id);
@@ -32,9 +43,9 @@ public class BoardController {
         if (service.validate(board)) {
 
             if (service.add(board)) {
-                return ResponseEntity.ok().body((Map.of("message", Map.of("type", "success",
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
                                 "text", STR."\{board.getId()}번 게시물이 등록되었습니다"),
-                        "data", board)));
+                        "data", board));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning",
                         "text", "게시물 등록이 실패하였습니다.")));
