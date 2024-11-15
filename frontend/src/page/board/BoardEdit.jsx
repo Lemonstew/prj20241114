@@ -53,14 +53,15 @@ export function BoardEdit() {
       });
   };
 
+  // board가 null일 때 (첫 렌더)
+  if (board === null) {
+    return <Spinner />;
+  }
+
   // 제목이나 본문이 비어있는 지 확인
   const disabled = !(
     board.title.trim().length > 0 && board.content.trim().length > 0
   );
-
-  if (board === null) {
-    return <Spinner />;
-  }
 
   return (
     <Box>
