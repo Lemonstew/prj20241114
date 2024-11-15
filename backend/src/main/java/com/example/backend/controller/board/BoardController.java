@@ -53,8 +53,8 @@ public class BoardController {
 
     @GetMapping("list")
     public List<Board> list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
+        
         return service.list(page);
-
     }
 
     @PostMapping("add")

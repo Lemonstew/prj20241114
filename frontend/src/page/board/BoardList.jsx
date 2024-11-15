@@ -14,11 +14,17 @@ export function BoardList() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
+    const controller = new AbortController();
     axios
       .get("/api/board/list", {
         params: searchParams,
+        signal: controller.signal,
       })
       .then((res) => setBoardList(res.data));
+
+    return () => {
+      controller.abort();
+    };
   }, [searchParams]);
 
   // searchParams
