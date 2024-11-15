@@ -52,6 +52,7 @@ public interface BoardMapper {
                     </if>
                     <if test="searchType == 'all' or searchType == 'content'">
                     OR  content LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
                 </trim>
             ORDER BY id DESC
             LIMIT #{offset}, 10
