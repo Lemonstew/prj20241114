@@ -17,8 +17,16 @@ public class BoardController {
     final BoardService service;
 
     @PutMapping("update")
-    public void update(@RequestBody Board board) {
-        service.update(board);
+    public ResponseEntity<Map<String, Object>> update(@RequestBody Board board) {
+        if (service.update(board)) {
+            return ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "success",
+                            "text", STR."\{board.getId()}번 게시물이 수정되었습니다.")));
+        } else {
+            return ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", STR."수정 중 문제가 발생하였습니다.")));
+        }
     }
 
     @DeleteMapping("delete/{id}")
