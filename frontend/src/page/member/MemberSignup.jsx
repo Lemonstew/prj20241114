@@ -10,6 +10,7 @@ export function MemberSignup() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
+  const [idCheck, setIdCheck] = useState(false);
   const navigate = useNavigate();
 
   function handleSaveClick() {
@@ -42,19 +43,28 @@ export function MemberSignup() {
   }
 
   const handleIdCheckClick = () => {
-    axios.get("/api/member/check", {
-      params: {
-        id: id
-      }
-    }).then((res) => {res.data}
+    axios
+      .get("/api/member/check", {
+        params: {
+          id: id,
+        },
+      })
+      .then((res) => {
+        res.data;
+      })
       .then((data) => {
         const message = data.message;
         toaster.create({
           type: message.type,
-          description: message.text
-        })
-      })
-  }
+          description: message.text,
+        });
+      });
+  };
+
+  // 가입버튼 비활성화 여부
+  let disabled = true;
+  disabled = !idCheck;
+
   return (
     <Box>
       <h3>회원가입</h3>
@@ -62,7 +72,9 @@ export function MemberSignup() {
         <Field label={"아이디"}>
           <Group attached w={"100%"}>
             <Input value={id} onChange={(e) => setId(e.target.value)} />
-            <Button onClick={handleIdCheckClick} variant={"outline"}>중복 확인</Button>
+            <Button onClick={handleIdCheckClick} variant={"outline"}>
+              중복 확인
+            </Button>
           </Group>
         </Field>
         <Field label={"암호"}>
