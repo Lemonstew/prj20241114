@@ -1,4 +1,4 @@
-import { Box, HStack, Table } from "@chakra-ui/react";
+import { Box, HStack, Input, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -8,10 +8,16 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import {
+  NativeSelectField,
+  NativeSelectRoot,
+} from "../../components/ui/native-select.jsx";
+import { Button } from "../../components/ui/button.jsx";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
   const [count, setCount] = useState(0);
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
@@ -33,6 +39,9 @@ export function BoardList() {
 
   // searchParams
   console.log(searchParams.toString());
+
+  // 검색 조건
+  console.log("검색조건", search);
 
   // page 번호
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
@@ -72,6 +81,27 @@ export function BoardList() {
           ))}
         </Table.Body>
       </Table.Root>
+
+      <Box>
+        <HStack>
+          <NativeSelectRoot
+            onChange={(e) => setSearch({ ...search, type: e.target.value })}
+          >
+            <NativeSelectField
+              items={[
+                { label: "전체", value: "all" },
+                { label: "제목", value: "title" },
+                { label: "본문", value: "content" },
+              ]}
+            />
+          </NativeSelectRoot>
+          <Input
+            onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
+          />
+          <Button>검색</Button>
+        </HStack>
+      </Box>
+
       <PaginationRoot
         onPageChange={handlePageChange}
         count={count}
