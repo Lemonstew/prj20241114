@@ -34,8 +34,8 @@ public class MemberController {
     public ResponseEntity<Map<String, Object>> signup(@RequestBody Member member) {
         try {
             if (service.add(member)) {
-                return ResponseEntity.ok().body(Map.of("type", "success",
-                        "text", "회원 가입이 완료되었습니다."));
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                        "text", "회원 가입이 완료되었습니다.")));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of("message",
                         Map.of("type", "error",

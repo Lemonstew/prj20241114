@@ -11,3 +11,5 @@ CREATE TABLE member
 
 SELECT *
 FROM member;
+
+DROP TABLE member;
