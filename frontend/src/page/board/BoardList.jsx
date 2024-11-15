@@ -17,9 +17,13 @@ import { Button } from "../../components/ui/button.jsx";
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
   const [count, setCount] = useState(0);
-  const [search, setSearch] = useState({ type: "all", keyword: "" });
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState({
+    type: searchParams.get("st") ?? "all",
+    keyword: searchParams.get("sk") ?? "",
+  });
+  const navigate = useNavigate();
+
   useEffect(() => {
     const controller = new AbortController();
     axios
@@ -56,6 +60,22 @@ export function BoardList() {
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
     setSearchParams(nextSearchParams);
+  }
+
+  function handleSearchClick() {
+    if (search.keyword.trim().length > 0) {
+      // 검색
+      const nextSearchParam = new URLSearchParams(searchParams);
+      nextSearchParam.set("st", search.type);
+      nextSearchParam.set("sk", search.keyword);
+      setSearchParams(nextSearchParam);
+    } else {
+      // 검색 안함
+      const nextSearchParam = new URLSearchParams(searchParams);
+      nextSearchParam.delete("st");
+      nextSearchParam.delete("sk");
+      setSearchParams(nextSearchParam);
+    }
   }
 
   return (
@@ -96,9 +116,10 @@ export function BoardList() {
             />
           </NativeSelectRoot>
           <Input
+            value={search.keyword}
             onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
           />
-          <Button>검색</Button>
+          <Button onClick={handleSearchClick}>검색</Button>
         </HStack>
       </Box>
 
