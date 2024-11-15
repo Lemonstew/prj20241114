@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -24,8 +24,9 @@ public class BoardService {
 
     }
 
-    public List<Board> list(Integer page) {
-        return mapper.selectPage((page - 1) * 10);
+    public Map<String, Object> list(Integer page) {
+        return Map.of("list", mapper.selectPage((page - 1) * 10),
+                "count", mapper.countAll());
     }
 
     public Board get(int id) {
