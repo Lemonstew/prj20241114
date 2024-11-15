@@ -18,3 +18,4 @@ INSERT INTO board
 SELECT title, content, writer
 FROM board;
 
+DROP TABLE board;

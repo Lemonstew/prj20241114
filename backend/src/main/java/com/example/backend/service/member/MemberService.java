@@ -13,7 +13,12 @@ public class MemberService {
 
     final MemberMapper mapper;
 
-    public void add(Member member) {
-        mapper.insert(member);
+    public boolean add(Member member) {
+        int cnt = mapper.insert(member);
+        return cnt == 1;
+    }
+
+    public boolean checkId(String id) {
+        return mapper.selectById(id) != null;
     }
 }
