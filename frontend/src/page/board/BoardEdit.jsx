@@ -19,6 +19,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 export function BoardEdit() {
   const [board, setBoard] = useState(null);
   const [progress, setProgress] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -39,10 +40,23 @@ export function BoardEdit() {
         });
         navigate(`/view/${board.id}`);
       })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
       .finally(() => {
         setProgress(false);
+        setDialogOpen(false);
       });
   };
+
+  // 제목이나 본문이 비어있는 지 확인
+  const disabled = !(
+    board.title.trim().length > 0 && board.content.trim().length > 0
+  );
 
   if (board === null) {
     return <Spinner />;
@@ -65,9 +79,16 @@ export function BoardEdit() {
           />
         </Field>
         <Box>
-          <DialogRoot>
-            <DialogTrigger>
-              <Button colorPalette={"cyan"} variant={"outline"}>
+          <DialogRoot
+            open={dialogOpen}
+            onOpenChange={(e) => setDialogOpen(e.open)}
+          >
+            <DialogTrigger asChild>
+              <Button
+                disabled={disabled}
+                colorPalette={"cyan"}
+                variant={"outline"}
+              >
                 수정
               </Button>
             </DialogTrigger>

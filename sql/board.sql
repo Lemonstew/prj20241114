@@ -8,3 +8,12 @@ CREATE TABLE board
     writer   VARCHAR(100)  NOT NULL,
     inserted DATETIME DEFAULT NOW()
 );
+
+SELECT *
+FROM board;
+
+# 페이지 연습욕 복붙
+INSERT INTO board
+    (title, content, writer)
+SELECT title, content, writer
+FROM board;
