@@ -7,6 +7,7 @@ export function Navbar() {
     <Flex gap={3}>
       <Box onClick={() => navigate("/")}>HOME</Box>
       <Box onClick={() => navigate("/add")}>작성</Box>
+      <Box onClick={() => navigate("/member/signup")}>가입</Box>
       <Box></Box>
     </Flex>
   );
