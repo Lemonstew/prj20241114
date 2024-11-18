@@ -67,6 +67,9 @@ export function MemberInfo() {
         <Field label={"아이디"}>
           <Input readOnly value={member.id} />
         </Field>
+        <Field label={"이메일"}>
+          <Input readOnly value={member.email} />
+        </Field>
         <Field label={"암호"}>
           <Input readOnly value={member.password} />
         </Field>

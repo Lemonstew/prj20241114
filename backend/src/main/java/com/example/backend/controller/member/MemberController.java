@@ -51,10 +51,24 @@ public class MemberController {
         return service.list();
     }
 
-    @GetMapping("check")
+    @GetMapping(value = "check", params = "id")
     public ResponseEntity<Map<String, Object>> checkId(@RequestParam String id) {
         if (service.checkId(id)) {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "used ID"),
+                    "available", false)
+            );
+        } else {
+            // 없으면
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "info", "text", "Can use"),
+                    "available", true)
+            );
+        }
+    }
+
+    @GetMapping(value = "check", params = "email")
+    public ResponseEntity<Map<String, Object>> checkEmail(@RequestParam String email) {
+        if (service.checkEmail(email)) {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "used E-mail"),
                     "available", false)
             );
         } else {

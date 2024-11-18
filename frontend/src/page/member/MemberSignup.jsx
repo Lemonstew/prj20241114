@@ -12,12 +12,18 @@ export function MemberSignup() {
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
   const [idCheck, setIdCheck] = useState(false);
+  const [emailCheck, setEmailCheck] = useState(true);
   const [passwordCheck, setPasswordCheck] = useState("");
   const navigate = useNavigate();
 
   function handleSaveClick() {
     axios
-      .post("/api/member/signup", { id, email, password, description })
+      .post("/api/member/signup", {
+        id,
+        email: email.length === 0 ? null : email,
+        password,
+        description,
+      })
       .then((res) => {
         console.log("잘됨, 페이지 이동, 토스트 출력");
 
@@ -62,14 +68,37 @@ export function MemberSignup() {
       });
   };
 
+  const handleEmailCheckClick = () => {
+    axios
+      .get("/api/member/check", {
+        params: {
+          email: email,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setEmailCheck(data.available);
+      });
+  };
+
   // 가입버튼 비활성화 여부
   let disabled = true;
+  let emailCheckButtonDisabled = email.length === 0;
 
   if (idCheck) {
-    if (password === passwordCheck) {
-      disabled = false;
+    if (emailCheck) {
+      if (password === passwordCheck) {
+        disabled = false;
+      }
     }
   }
+
+  // 이메일 중복확인 버튼 활성화 여부
 
   return (
     <Box>
@@ -90,7 +119,28 @@ export function MemberSignup() {
           </Group>
         </Field>
         <Field label={"이메일"}>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Group attached w={"100%"}>
+            <Input
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                // 이메일은 필수 입력이 아니어서
+                // 입력하지 않을 경우 중복체크 하지 않아도 됨
+                if (e.target.value.length > 0) {
+                  setEmailCheck(false);
+                } else {
+                  setEmailCheck(true);
+                }
+              }}
+            />
+            <Button
+              disabled={emailCheckButtonDisabled}
+              onClick={handleEmailCheckClick}
+              variant={"outline"}
+            >
+              중복확인
+            </Button>
+          </Group>
         </Field>
         <Field label={"암호"}>
           <Input
