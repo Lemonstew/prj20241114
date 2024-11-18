@@ -57,6 +57,7 @@ export function MemberSignup() {
           type: message.type,
           description: message.text,
         });
+        setIdCheck(data.available);
       });
   };
 
