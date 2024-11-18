@@ -1,5 +1,5 @@
 import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -14,10 +14,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 export function MemberInfo() {
   const [member, setMember] = useState(null);
+  const [password, setPassword] = useState("");
+  const [open, setOpen] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 회원 정보 열기
@@ -25,9 +29,30 @@ export function MemberInfo() {
   }, []);
 
   function handleDeleteClick() {
-    axios.delete("/api/member/remove", {
-      data: { id: id },
-    });
+    axios
+      .delete("/api/member/remove", {
+        data: { id: id, password: password },
+      })
+      .then((res) => {
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        navigate("/member/signup");
+      })
+      .catch((res) => {
+        const message = res.response.data.message;
+
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .finally(() => {
+        setOpen(false);
+        setPassword("");
+      });
   }
 
   if (!member) {
@@ -52,7 +77,7 @@ export function MemberInfo() {
           <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
         <Box>
-          <DialogRoot>
+          <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger>
               <Button colorPalette={"red"} variant={"outline"}>
                 탈퇴
@@ -63,7 +88,15 @@ export function MemberInfo() {
                 <DialogTitle>탈퇴 확인</DialogTitle>
               </DialogHeader>
               <DialogBody>
-                <p>탈퇴하시겠습니까?</p>
+                <Stack gap={5}>
+                  <Field label={"암호"}>
+                    <Input
+                      placeholder={"암호를 입력해주세요."}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </Field>
+                </Stack>
               </DialogBody>
               <DialogFooter>
                 <DialogActionTrigger>
