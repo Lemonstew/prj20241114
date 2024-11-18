@@ -57,18 +57,20 @@ export function MemberEdit() {
         </Field>
         <Field label={"암호"}>
           <Input
-            defaultValue={member.password}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </Field>
         <Field label={"자기소개"}>
-          <Textarea defaultValue={member.description} />
+          <Textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </Field>
         <Box>
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger>
-              <Button colorPalette={"red"} variant={"outline"}>
+              <Button colorPalette={"blue"} variant={"outline"}>
                 저장
               </Button>
             </DialogTrigger>
@@ -80,9 +82,9 @@ export function MemberEdit() {
                 <Stack gap={5}>
                   <Field label={"기존 암호"}>
                     <Input
-                      placeholder={"암호를 입력해주세요."}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder={"기존 암호를 입력해주세요."}
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
                     />
                   </Field>
                 </Stack>
