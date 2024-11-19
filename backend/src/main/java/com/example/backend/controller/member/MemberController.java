@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,31 +36,48 @@ public class MemberController {
     }
 
     @PutMapping("edit")
-    public ResponseEntity<Map<String, Object>> edit(@RequestBody MemberEdit member) {
-        if (service.update(member)) {
-            return ResponseEntity.ok(Map.of("message", Map.of("type", "success",
-                    "text", "회원정보를 수정하였습니다.")));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> edit(@RequestBody MemberEdit member, Authentication authentication) {
+        if (service.hasAccess(member.getId(), authentication)) {
+            if (service.update(member)) {
+                return ResponseEntity.ok(Map.of("message", Map.of("type", "success",
+                        "text", "회원정보를 수정하였습니다.")));
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning",
+                        "text", "정확한 정보를 입력해주세요.")));
+            }
         } else {
-            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning",
-                    "text", "정확한 정보를 입력해주세요.")));
+            return ResponseEntity.status(403).build();
         }
 
     }
 
     @DeleteMapping("remove")
-    public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member) {
-        if (service.remove(member)) {
-            return ResponseEntity.ok(Map.of("message", Map.of("type", "success",
-                    "text", "회원정보를 삭제하였습니다.")));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member, Authentication authentication) {
+
+        if (service.hasAccess(member.getId(), authentication)) {
+            if (service.remove(member)) {
+                return ResponseEntity.ok(Map.of("message", Map.of("type", "success",
+                        "text", "회원정보를 삭제하였습니다.")));
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning",
+                        "text", "정확한 정보를 입력해주세요.")));
+            }
         } else {
-            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning",
-                    "text", "정확한 정보를 입력해주세요.")));
+            return ResponseEntity.status(403).build();
         }
     }
 
     @GetMapping("{id}")
-    public Member getMember(@PathVariable String id) {
-        return service.get(id);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Member> getMember(@PathVariable String id, Authentication authentication) {
+
+        if (service.hasAccess(id, authentication)) {
+            return ResponseEntity.ok(service.get(id));
+        } else {
+            return ResponseEntity.status(403).build();
+        }
     }
 
     @GetMapping("list")

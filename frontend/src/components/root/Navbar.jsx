@@ -28,7 +28,7 @@ export function Navbar() {
       >
         로그아웃
       </Box>
-      <Box></Box>
+      <Box>{name}</Box>
     </Flex>
   );
 }
