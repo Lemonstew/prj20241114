@@ -23,8 +23,9 @@ export function MemberLogin() {
         });
         // "/"로 이동
         navigate("/");
-        // localStorage 에 token 저장
-        localStorage.setItem("token", data.token);
+        // login
+        console.log(data.token);
+        authentication.login(data.token);
       })
       .catch((e) => {
         const message = e.response.data.message;
