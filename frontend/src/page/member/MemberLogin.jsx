@@ -30,8 +30,8 @@ export function MemberLogin() {
         const message = e.response.data.message;
         // 토스트 띄우고
         toaster.create({
-          type: data.message.type,
-          description: data.message.text,
+          type: e.message.type,
+          description: e.message.text,
         });
       })
       .finally();
@@ -45,7 +45,10 @@ export function MemberLogin() {
           <Input value={id} onChange={(e) => setId(e.target.value)} />
         </Field>
         <Field label={"암호"}>
-          <Input value={password} onChange={(e) => setId(e.target.value)} />
+          <Input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Field>
         <Box>
           <Button onClick={handleLoginClick}>로그인</Button>
