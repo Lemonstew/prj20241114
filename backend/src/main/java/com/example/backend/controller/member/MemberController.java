@@ -19,10 +19,15 @@ public class MemberController {
     final MemberService service;
 
     @PostMapping("login")
-    public void login(@RequestBody Member member) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Member member) {
         String token = service.token(member);
         if (token != null) {
+            // success login
+            return ResponseEntity.ok(Map.of("token", token,
+                    "message", Map.of("type", "success",
+                            "text", "success login")));
         } else {
+            return ResponseEntity.status(401).body(Map.of("message", "waring", "text", "로그인에 실패하였습니다,"));
         }
     }
 
