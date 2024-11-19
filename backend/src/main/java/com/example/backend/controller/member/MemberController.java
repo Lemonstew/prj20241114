@@ -73,7 +73,7 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Member> getMember(@PathVariable String id, Authentication authentication) {
 
-        if (service.hasAccess(id, authentication)) {
+        if (service.hasAccess(id, authentication) || service.isAdmin(authentication)) {
             return ResponseEntity.ok(service.get(id));
         } else {
             return ResponseEntity.status(403).build();
@@ -81,6 +81,7 @@ public class MemberController {
     }
 
     @GetMapping("list")
+    @PreAuthorize("hasAuthority('SCOPE_admin')")
     public List<Member> list() {
         return service.list();
     }

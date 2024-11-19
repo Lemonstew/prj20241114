@@ -10,6 +10,7 @@ import { MemberInfo } from "./page/member/MemberInfo.jsx";
 import { MemberEdit } from "./page/member/MemberEdit.jsx";
 import { MemberLogin } from "./page/member/MemberLogin.jsx";
 import axios from "axios";
+import { createContext } from "@chakra-ui/react";
 
 // axios 인터셉터 설정
 axios.interceptors.request.use(function (config) {
@@ -66,6 +67,9 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+// step 1 : context 만들기
+const AuthenticationContext = createContext(null);
 
 function App() {
   return <RouterProvider router={router} />;
