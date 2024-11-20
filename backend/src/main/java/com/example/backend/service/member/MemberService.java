@@ -85,7 +85,8 @@ public class MemberService {
                 JwtClaimsSet claims = JwtClaimsSet.builder()
                         .issuer("self")
                         .subject(member.getId())
-                        .issuedAt(Instant.now().plusSeconds(60 * 60 * 24 * 7))
+                        .issuedAt(Instant.now())
+                        .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7))
                         .claim("scope", "authsString")
                         .build();
                 return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
