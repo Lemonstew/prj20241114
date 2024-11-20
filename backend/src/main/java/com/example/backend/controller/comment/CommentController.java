@@ -16,6 +16,13 @@ public class CommentController {
 
     final CommentService service;
 
+    @DeleteMapping("remove/{id}")
+    public void remove(@PathVariable Integer id, Authentication auth) {
+        if (service.hasAccess(id, auth)) {
+            service.remove(id);
+        }
+    }
+
     @GetMapping("list/{boardId}")
     public List<Comment> list(@PathVariable Integer boardId) {
         return service.list(boardId);
