@@ -11,3 +11,19 @@ CREATE TABLE comment
 
 SELECT *
 FROM comment;
+
+# sub query
+SELECT id,
+       title,
+       writer,
+       inserted,
+       (SELECT COUNT(c.id) FROM comment c WHERE board_id = b.id) c
+FROM board b
+ORDER BY id DESC;
+
+# join
+SELECT b.id, b.title, b.writer, b.inserted
+FROM board b
+         JOIN comment c ON b.id = c.board_id
+GROUP BY b.id
+ORDER BY b.id DESC;
