@@ -1,7 +1,7 @@
-import {Box, Flex, HStack, Textarea} from "@chakra-ui/react";
-import {Button} from "../ui/button.jsx";
-import {useContext, useState} from "react";
-import {AuthenticationContext} from "../context/AuthenticationProvider.jsx";
+import { Box, Flex, HStack, Textarea } from "@chakra-ui/react";
+import { Button } from "../ui/button.jsx";
+import { useContext, useState } from "react";
+import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog.jsx";
 
-function DeleteButton({onClick}) {
+function DeleteButton({ onClick }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -45,7 +45,7 @@ function DeleteButton({onClick}) {
   );
 }
 
-function EditButton({comment}) {
+function EditButton({ comment }) {
   const [open, setOpen] = useState(false);
   const [newComment, setNewComment] = useState(comment.comment);
 
@@ -71,7 +71,13 @@ function EditButton({comment}) {
             <DialogActionTrigger>
               <Button variant={"outline"}>취소</Button>
             </DialogActionTrigger>
-            <Button colorPalette={"purple"} onClick={onClick}>
+            <Button
+              colorPalette={"purple"}
+              onClick={() => {
+                setOpen(false);
+                onEditClick(comment.id, newComment);
+              }}
+            >
               수정
             </Button>
           </DialogFooter>
@@ -81,8 +87,8 @@ function EditButton({comment}) {
   );
 }
 
-export function CommentItem({comment, onDeleteClick, onEditClick}) {
-  const {hasAccess} = useContext(AuthenticationContext);
+export function CommentItem({ comment, onDeleteClick, onEditClick }) {
+  const { hasAccess } = useContext(AuthenticationContext);
 
   return (
     <HStack boarder={"1px solid black"} m={5}>
@@ -95,8 +101,8 @@ export function CommentItem({comment, onDeleteClick, onEditClick}) {
       </Box>
       {hasAccess(comment.memberId) && (
         <Box>
-          <EditButton comment={comment} onEditClick{onEditClick} />
-          <DeleteButton onClick={() => onDeleteClick(comment.id)}/>
+          <EditButton comment={comment} onEditClick={onEditClick} />
+          <DeleteButton onClick={() => onDeleteClick(comment.id)} />
         </Box>
       )}
     </HStack>
