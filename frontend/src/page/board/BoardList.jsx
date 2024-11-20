@@ -52,12 +52,6 @@ export function BoardList() {
     setSearch(nextSearch);
   }, [searchParams]);
 
-  // searchParams
-  console.log(searchParams.toString());
-
-  // 검색 조건
-  console.log("검색조건", search);
-
   // page 번호
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
   const page = Number(pageParam);

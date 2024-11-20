@@ -25,7 +25,7 @@ export function Navbar() {
       {isAuthenticated && (
         <Box
           onClick={() => {
-            authentication.logout();
+            logout();
             navigate("/member/login");
           }}
         >
