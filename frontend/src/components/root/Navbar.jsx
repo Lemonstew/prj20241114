@@ -32,7 +32,7 @@ export function Navbar() {
           로그아웃
         </Box>
       )}
-      <Box>{id}</Box>
+      <Box onClick={() => navigate(`/member/${id}`)}>{id}</Box>
     </Flex>
   );
 }
