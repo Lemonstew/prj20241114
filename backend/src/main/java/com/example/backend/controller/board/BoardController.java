@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -76,12 +77,14 @@ public class BoardController {
 
     @PostMapping("add")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Board board,
-                                                   Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> add(
+            Board board,
+            @RequestParam(value = "files[]", required = false) MultipartFile[] files,
+            Authentication authentication) {
 
         if (service.validate(board)) {
 
-            if (service.add(board, authentication)) {
+            if (service.add(board, files, authentication)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
                                 "text", STR."\{board.getId()}번 게시물이 등록되었습니다"),
                         "data", board));
