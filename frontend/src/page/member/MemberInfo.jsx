@@ -22,7 +22,7 @@ export function MemberInfo() {
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
 
-  const hasAccess = useContext(AuthenticationContext);
+  const { hasAccess, logout } = useContext(AuthenticationContext);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -38,6 +38,8 @@ export function MemberInfo() {
         data: { id: id, password: password },
       })
       .then((res) => {
+        logout();
+
         const message = res.data.message;
         toaster.create({
           type: message.type,

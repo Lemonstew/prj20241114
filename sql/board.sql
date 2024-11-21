@@ -9,6 +9,9 @@ CREATE TABLE board
     inserted DATETIME DEFAULT NOW()
 );
 
+ALTER TABLE board
+    ADD COLUMN file VARCHAR(300) NOT NULL
+
 SELECT *
 FROM board;
 
