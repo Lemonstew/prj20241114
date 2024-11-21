@@ -18,7 +18,7 @@ export function BoardAdd() {
     setProgress(true);
 
     axios
-      .postForm("/api/board/add", { title, content })
+      .postForm("/api/board/add", { title, content, files })
       .then((res) => res.data)
       .then((data) => {
         const message = data.message;
