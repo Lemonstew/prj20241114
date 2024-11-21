@@ -9,9 +9,9 @@ CREATE TABLE auth
 
 #
 INSERT INTO auth (member_id, auth)
-VALUES ('히트게임즈', 'admin');
+VALUES ('코코넛찌개', 'admin');
 INSERT INTO auth (member_id, auth)
-VALUES ('히트게임즈', 'manager');
+VALUES ('코코넛찌개', 'manager');
 
 SELECT *
 FROM auth;
