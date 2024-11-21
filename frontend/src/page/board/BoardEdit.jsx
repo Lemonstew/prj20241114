@@ -58,7 +58,12 @@ export function BoardEdit() {
     setProgress(true);
 
     axios
-      .put("/api/board/update", board)
+      .putForm("/api/board/update", {
+        id: board.id,
+        title: board.title,
+        content: board.content,
+        removeFiles,
+      })
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
