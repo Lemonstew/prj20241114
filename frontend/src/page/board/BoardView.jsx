@@ -28,6 +28,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { CommentContainer } from "../../components/comment/CommentContainer.jsx";
 import { GoHeart, GoHeartFill } from "react-icons/go";
+import { ToggleTip } from "../../components/ui/toggle-tip.jsx";
 
 function ImageFileView({ files }) {
   return (
@@ -48,6 +49,7 @@ export function BoardView() {
   const { id } = useParams();
   const [board, setBoard] = useState(null);
   const [like, setLike] = useState({ like: false, count: 0 });
+  const [likeTooltipOpen, setLikeTooltipOpen] = useState(false);
   const navigate = useNavigate();
   const { hasAccess } = useContext(AuthenticationContext);
 
@@ -86,14 +88,19 @@ export function BoardView() {
   };
 
   const handleLikeClick = () => {
-    axios
-      .post("/api/board/like", {
-        id: board.id,
-      })
-      .then((res) => res.data)
-      .then((data) => setLike(data))
-      .catch()
-      .finally();
+    if (isAuthenticated) {
+      axios
+        .post("/api/board/like", {
+          id: board.id,
+        })
+        .then((res) => res.data)
+        .then((data) => setLike(data))
+        .catch()
+        .finally();
+    } else {
+      // tooltip 보여주기
+      setLikeTooltipOpen(!likeTooltipOpen);
+    }
   };
 
   return (
@@ -102,10 +109,15 @@ export function BoardView() {
         <Heading me={"auto"}>{id} 번 게시물</Heading>
         <HStack>
           <Box onClick={handleLikeClick}>
-            <Heading>
-              {like.like || <GoHeart />}
-              {like.like && <GoHeartFill />}
-            </Heading>
+            <ToggleTip
+              open={likeTooltipOpen}
+              content={"로그인 후 좋아요를 눌러주세요."}
+            >
+              <Heading>
+                {like.like || <GoHeart />}
+                {like.like && <GoHeartFill />}
+              </Heading>
+            </ToggleTip>
           </Box>
           <Box>
             <Heading>{like.count}</Heading>
