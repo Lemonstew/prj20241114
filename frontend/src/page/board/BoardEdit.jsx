@@ -1,6 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, HStack, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import {
+  Box,
+  HStack,
+  Image,
+  Input,
+  Spinner,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
@@ -16,6 +24,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Switch } from "../../components/ui/switch.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 function ImageView({ files, onRemoveSwitchClick }) {
   return (
@@ -38,6 +47,8 @@ export function BoardEdit() {
   const [progress, setProgress] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [removeFiles, setRemoveFiles] = useState([]);
+  const [uploadFiles, setUploadFiles] = useState([]);
+  const { hasAccess } = useContext(AuthenticationContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -63,6 +74,7 @@ export function BoardEdit() {
         title: board.title,
         content: board.content,
         removeFiles,
+        uploadFiles,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -115,6 +127,23 @@ export function BoardEdit() {
           files={board.fileList}
           onRemoveSwitchClick={handleRemoveSwitchClick}
         />
+        <Box>
+          <Box>
+            <Input
+              onChange={(e) => setUploadFiles(e.target.files)}
+              type={"file"}
+              multiple
+              accept={"image/*"}
+            />
+          </Box>
+          <Box>
+            {Array.from(uploadFiles).map((file) => (
+              <li>
+                {file.name} ({Math.floor(file.size / 1024)} KB)
+              </li>
+            ))}
+          </Box>
+        </Box>
         {hasAccess(board.writer) && (
           <Box>
             <DialogRoot
