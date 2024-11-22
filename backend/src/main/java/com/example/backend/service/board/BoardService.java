@@ -191,7 +191,7 @@ public class BoardService {
 
     public Map<String, Object> getLike(Integer id, Authentication authentication) {
         boolean like = false;
-        if (authentication == null) {
+        if (authentication != null) {
             Map<String, Object> row = mapper.selectLikeByBoardIdAndMemberId(id, authentication.getName());
             if (row != null) {
                 like = true;
