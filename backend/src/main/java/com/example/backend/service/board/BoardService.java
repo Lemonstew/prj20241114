@@ -124,6 +124,9 @@ public class BoardService {
         // 댓글 지우기
         commentMapper.deleteByBoardId(id);
 
+        // 좋아요 지우기
+        mapper.deleteLikeByBoardId(id);
+
 
         int cnt = mapper.deleteById(id);
         return cnt == 1;

@@ -43,26 +43,27 @@ public interface BoardMapper {
     int update(Board board);
 
     @Select("""
-            <script>
-            SELECT b.id, b.title, b.writer, b.inserted,
-            COUNT(DISTINCT c.id) countComment,
-            COUNT(DISTINCT f.name) countFile
-            FROM board b LEFT JOIN comment c ON b.id = c.board_id
-            LEFT JOIN board_file f
-            ON b.id = f.board_id
-            WHERE 
-                <trim prefixOverrides="OR">
-                    <if test="searchType == 'all' or searchType == 'title'">
-                        title LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                    <if test="searchType == 'all' or searchType == 'content'">
-                    OR  content LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                </trim>
-            GROUP BY b.id
-            ORDER BY id DESC
-            LIMIT #{offset}, 10
-            </script>
+                    <script>
+                    SELECT b.id, b.title, b.writer, b.inserted,
+                    COUNT(DISTINCT c.id) countComment,
+                    COUNT(DISTINCT f.name) countFile,
+                    COUNT(DISTINCT l.member_id) countLike
+                    FROM board b LEFT JOIN comment c ON b.id = c.board_id
+                    LEFT JOIN board_file f ON b.id = f.board_id
+                    LEFT JOIN board_like l ON b.id = l.board_id
+                    WHERE
+                        <trim prefixOverrides="OR">
+                            <if test="searchType == 'all' or searchType == 'title'">
+                                title LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="searchType == 'all' or searchType == 'content'">
+                            OR  content LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                        </trim>
+                    GROUP BY b.id
+                    ORDER BY id DESC
+                    LIMIT #{offset}, 10
+                    </script>
             """)
     List<Board> selectPage(Integer offset, String searchType, String keyword);
 
@@ -131,4 +132,16 @@ public interface BoardMapper {
               AND member_id = #{name}
             """)
     Map<String, Object> selectLikeByBoardIdAndMemberId(Integer id, String name);
+
+    @Delete("""
+            DELETE FROM board_like
+            WHERE board_id = #{id}
+            """)
+    int deleteLikeByBoardId(int id);
+
+    @Delete("""
+            DELETE FROM board_like
+            WHERE member_id = #{id}
+            """)
+    int deleteLikeByMemberId(String id);
 }

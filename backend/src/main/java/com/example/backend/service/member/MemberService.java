@@ -65,6 +65,9 @@ public class MemberService {
                     boardService.remove(boardId);
                 }
                 cnt = mapper.deleteById(member.getId());
+
+                // 좋아요 지우기
+                boardMapper.deleteLikeByMemberId(member.getId());
             }
         }
 

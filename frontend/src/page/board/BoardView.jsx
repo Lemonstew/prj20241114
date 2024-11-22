@@ -51,7 +51,7 @@ export function BoardView() {
   const [like, setLike] = useState({ like: false, count: 0 });
   const [likeTooltipOpen, setLikeTooltipOpen] = useState(false);
   const navigate = useNavigate();
-  const { hasAccess } = useContext(AuthenticationContext);
+  const { hasAccess, isAuthenticated } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
