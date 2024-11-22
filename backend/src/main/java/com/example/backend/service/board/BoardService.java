@@ -173,4 +173,15 @@ public class BoardService {
 
         return board.getWriter().equals(authentication.getName());
     }
+
+    public void like(Board board, Authentication authentication) {
+        // 이미 좋아요면 삭제
+        int cnt = mapper.deleteLikeByBoardIdAndMemberId(board.getId(), authentication.getName());
+        // 아니면 삽입
+        if (cnt == 0) {
+            mapper.insertLike(board.getId(), authentication.getName());
+        }
+
+
+    }
 }
