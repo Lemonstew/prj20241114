@@ -19,6 +19,11 @@ public class BoardController {
 
     final BoardService service;
 
+    @GetMapping("like/{id}")
+    public Map<String, Object> getLike(@PathVariable Integer id, Authentication authentication) {
+        return service.getLike(id, authentication);
+    }
+
     @PostMapping("like")
     @PreAuthorize("isAuthenticated()")
     public Map<String, Object> like(@RequestBody Board board,

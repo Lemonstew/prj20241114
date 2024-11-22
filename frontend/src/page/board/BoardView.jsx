@@ -55,6 +55,13 @@ export function BoardView() {
     axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`/api/board/like/${id}`)
+      .then((res) => res.data)
+      .then((data) => setLike(data));
+  }, []);
+
   if (board === null) {
     return <Spinner />;
   }
