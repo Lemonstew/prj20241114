@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Icon, Text } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 
 function NavbarItem(props) {
   return (
@@ -30,10 +31,15 @@ export function Navbar() {
   );
 
   return (
-    <Flex gap={3}>
+    <Flex gap={3} mb={6}>
       <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
       {isAuthenticated && (
-        <NavbarItem onClick={() => navigate("/add")}>작성</NavbarItem>
+        <NavbarItem onClick={() => navigate("/add")}>
+          <Icon hideFrom={"md"}>
+            <HiOutlinePencilSquare />
+          </Icon>
+          <Text hideBelow={"md"}>작성</Text>
+        </NavbarItem>
       )}
       <Box mx={"auto"}></Box>
       {isAuthenticated || (

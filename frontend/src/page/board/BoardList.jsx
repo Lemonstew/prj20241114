@@ -1,4 +1,12 @@
-import { Badge, Box, Heading, HStack, Input, Table } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Center,
+  Heading,
+  HStack,
+  Input,
+  Table,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -11,6 +19,9 @@ import {
 import { Button } from "../../components/ui/button.jsx";
 import { FaCommentDots, FaImages } from "react-icons/fa6";
 import { GoHeartFill } from "react-icons/go";
+import { CgSearch } from "react-icons/cg";
+import { CiHashtag, CiUser } from "react-icons/ci";
+import { IoCalendar } from "react-icons/io5";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
@@ -88,7 +99,9 @@ export function BoardList() {
 
   return (
     <Box>
-      <Heading size={{ base: "xl", md: "2xl" }}>게시물 목록</Heading>
+      <Heading size={{ base: "xl", md: "2xl" }} mb={7}>
+        게시물 목록
+      </Heading>
 
       <Box hideFrom={"md"}>hi</Box>
       <Box hideBelow={"md"}>hello</Box>
@@ -96,13 +109,19 @@ export function BoardList() {
         <Table.Root interactive>
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader>번호</Table.ColumnHeader>
+              <Table.ColumnHeader>
+                <CiHashtag />
+              </Table.ColumnHeader>
               <Table.ColumnHeader>제목</Table.ColumnHeader>
               <Table.ColumnHeader>
                 <GoHeartFill />
               </Table.ColumnHeader>
-              <Table.ColumnHeader>작성자</Table.ColumnHeader>
-              <Table.ColumnHeader hideBelow={"md"}>작성일시</Table.ColumnHeader>
+              <Table.ColumnHeader>
+                <CiUser />
+              </Table.ColumnHeader>
+              <Table.ColumnHeader hideBelow={"md"}>
+                <IoCalendar />
+              </Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -141,23 +160,34 @@ export function BoardList() {
       )}
 
       <Box>
-        <HStack>
-          <Box>
-            <select
-              value={search.type}
-              onChange={(e) => setSearch({ ...search, type: e.target.value })}
-            >
-              <option value={"all"}>전체</option>
-              <option value={"title"}>제목</option>
-              <option value={"content"}>본문</option>
-            </select>
-          </Box>
-          <Input
-            value={search.keyword}
-            onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
-          />
-          <Button onClick={handleSearchClick}>검색</Button>
-        </HStack>
+        <Center>
+          <HStack
+            my={7}
+            w={{
+              sm: "400px",
+            }}
+          >
+            <Box>
+              <select
+                value={search.type}
+                onChange={(e) => setSearch({ ...search, type: e.target.value })}
+              >
+                <option value={"all"}>전체</option>
+                <option value={"title"}>제목</option>
+                <option value={"content"}>본문</option>
+              </select>
+            </Box>
+            <Input
+              value={search.keyword}
+              onChange={(e) =>
+                setSearch({ ...search, keyword: e.target.value })
+              }
+            />
+            <Button onClick={handleSearchClick}>
+              <CgSearch />
+            </Button>
+          </HStack>
+        </Center>
       </Box>
 
       <PaginationRoot
@@ -166,11 +196,13 @@ export function BoardList() {
         pageSize={10}
         page={page}
       >
-        <HStack>
-          <PaginationPrevTrigger />
-          <PaginationItems />
-          <PaginationNextTrigger />
-        </HStack>
+        <Center>
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </Center>
       </PaginationRoot>
     </Box>
   );
