@@ -32,7 +32,7 @@ export function Navbar() {
 
   return (
     <Flex gap={3} mb={6}>
-      <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
+      <NavbarItem onClick={() => navigate("/")}>홈</NavbarItem>
       {isAuthenticated && (
         <NavbarItem onClick={() => navigate("/add")}>
           <Icon hideFrom={"md"}>
